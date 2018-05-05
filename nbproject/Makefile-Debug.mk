@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Carro.o \
+	${OBJECTDIR}/Evento.o \
 	${OBJECTDIR}/LinkedQueue.o \
 	${OBJECTDIR}/Pista.o \
 	${OBJECTDIR}/Semaforo.o \
@@ -70,6 +71,11 @@ ${OBJECTDIR}/Carro.o: Carro.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Carro.o Carro.cpp
+
+${OBJECTDIR}/Evento.o: Evento.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Evento.o Evento.cpp
 
 ${OBJECTDIR}/LinkedQueue.o: LinkedQueue.cpp
 	${MKDIR} -p ${OBJECTDIR}

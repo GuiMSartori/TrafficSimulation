@@ -5,15 +5,18 @@
                    displayName="Arquivos de Cabeçalho"
                    projectFiles="true">
       <itemPath>Carro.h</itemPath>
+      <itemPath>Evento.h</itemPath>
       <itemPath>LinkedQueue.h</itemPath>
       <itemPath>Pista.h</itemPath>
       <itemPath>Semaforo.h</itemPath>
       <itemPath>array_list.h</itemPath>
+      <itemPath>linked_list.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Arquivos de Código-Fonte"
                    projectFiles="true">
       <itemPath>Carro.cpp</itemPath>
+      <itemPath>Evento.cpp</itemPath>
       <itemPath>LinkedQueue.cpp</itemPath>
       <itemPath>Pista.cpp</itemPath>
       <itemPath>Semaforo.cpp</itemPath>
@@ -49,6 +52,10 @@
       </item>
       <item path="Carro.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Evento.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Evento.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="LinkedQueue.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="LinkedQueue.h" ex="false" tool="3" flavor2="0">
@@ -62,6 +69,8 @@
       <item path="Semaforo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="array_list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="linked_list.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -90,6 +99,10 @@
       </item>
       <item path="Carro.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Evento.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Evento.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="LinkedQueue.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="LinkedQueue.h" ex="false" tool="3" flavor2="0">
@@ -103,6 +116,8 @@
       <item path="Semaforo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="array_list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="linked_list.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

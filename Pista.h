@@ -4,10 +4,11 @@
 #include <cstdint>
 #include "LinkedQueue.h"
 #include "Carro.h"
+#include "array_list.h"
 
 class Pista: public LinkedQueue<Carro> {
   public:
-      Pista(float tamanhoMax, float velocidade);
+      Pista(float tamanhoMax, float velocidade, structures::ArrayList<Pista *> saida);
 
       void enqueue(const Carro& carro);
       Carro dequeue();
@@ -16,8 +17,11 @@ class Pista: public LinkedQueue<Carro> {
       float getTamanhoMax();
       float getTamanhoOcupado();
       float getEspacoLivre();
-
+      
+      bool canFit(Carro carro);
   private:
+      structures::ArrayList<Pista *> saida;
+      
       float tamanhoMax;
       float tamanhoOcupado;
       float velocidade;
