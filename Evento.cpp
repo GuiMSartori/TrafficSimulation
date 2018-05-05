@@ -1,21 +1,22 @@
 #include "Evento.h"
 
+Evento::Evento(int tempo_ev, EVENT_TYPE tipo_ev) {
+    this->tempo = tempo_ev;
+    this->tipo = tipo_ev;
+}
+
 bool Evento::operator >(const Evento& ev) const {
-    return tempo_ev > ev.getTempoEv();
+    return tempo > ev.getTempo();
 }
 
-int Evento::getTempoCr() const {
-    return tempo_criacao;
-}
-
-int Evento::getTempoEv() const {
-    return tempo_ev;
+int Evento::getTempo() const {
+    return tempo;
 }
 
 EVENT_TYPE Evento::getTipo() const {
-    return tipo_ev;
+    return tipo;
 }
 
-void Evento::setTempEv(int tempo) {
-    tempo_ev = tempo;
+void Evento::setTemp(int tempo) {
+    tempo = tempo;
 }
