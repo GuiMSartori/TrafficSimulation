@@ -8,14 +8,14 @@ enum EVENT_TYPE {
 class Evento {
 public:
     Evento(int tempo_ev, EVENT_TYPE tipo_ev);
-    
+
     int getTempo() const;
 
     void setTemp(int tempo);
-    
+
     EVENT_TYPE getTipo() const;
-    
-    bool operator >(const Evento& ev) const;
+
+    bool operator>(const Evento& ev) const;
 private:
     int tempo;
     EVENT_TYPE tipo;

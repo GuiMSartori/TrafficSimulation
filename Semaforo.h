@@ -5,16 +5,15 @@
 
 class Semaforo {
 public:
-    Semaforo(Pista * saida, structures::ArrayList<Pista *> entrada, structures::ArrayList<float> probabilidades);
-    ~Semaforo();
+    Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<Pista *> entrada, structures::ArrayList<double> probabilidades);
     void mudaSinal();
-    void trocaDePista();
+    void trocaDePista(Pista * pista);
     bool isAberto();
 private:
     bool aberto;
-    Pista * saida;
+    structures::ArrayList<Pista *> saida;
     structures::ArrayList<Pista *> entrada;
-    structures::ArrayList<float> probabilidades;
+    structures::ArrayList<double> probabilidades;
 };
 
 #endif /* SEMAFORO_H */

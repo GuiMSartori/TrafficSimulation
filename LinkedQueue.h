@@ -6,7 +6,7 @@
 template<typename T>
 //! Fila Encadeada
 class LinkedQueue {
- public:
+public:
     LinkedQueue();
 
     virtual ~LinkedQueue();
@@ -32,51 +32,59 @@ class LinkedQueue {
     //! tamanho
     std::size_t size() const;
 
- private:
-    class Node {
-     public:
-        explicit Node(const T& data):
-            data_{data}
-        {}
+private:
 
-        Node(const T& data, Node* next):
-            data_{data},
-            next_{next}
-        {}
+    class Node {
+    public:
+        explicit Node(const T& data) :
+        data_{data}
+        {
+        }
+
+        Node(const T& data, Node* next) :
+        data_{data},
+        next_{next}
+        {
+        }
 
         //! getter: info
-        T& data()  {
+
+        T& data() {
             return data_;
         }
 
         //! getter-constante: info
+
         const T& data() const {
             return data_;
         }
 
         //! getter: próximo
+
         Node* next() {
             return next_;
         }
 
         //! getter-constante: próximo
+
         const Node* next() const {
             return next_;
         }
 
         //! setter: próximo
+
         void next(Node* next) {
             next_ = next;
         }
 
-     private:
+    private:
         T data_;
         Node* next_;
     };
 
-    Node* head;  // nodo-cabeça
-    Node* tail;  // nodo-fim
-    std::size_t size_;  // tamanho
+    Node* head; // nodo-cabeça
+    Node* tail; // nodo-fim
+    std::size_t size_; // tamanho
 };
 
 #endif /* LINKEDQUEUE_H */

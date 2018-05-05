@@ -1,13 +1,13 @@
 #include "Carro.h"
 
-Carro::Carro(float tam) {
+Carro::Carro(double tam) {
     tamanho = tam;
 }
 
-float Carro::getTamanho() {
+double Carro::getTamanho() {
     return tamanho;
 }
 
-const float Carro::getTamanho() const{
+const double Carro::getTamanho() const {
     return tamanho;
 }

@@ -6,25 +6,25 @@
 #include "Carro.h"
 #include "array_list.h"
 
-class Pista: public LinkedQueue<Carro> {
-  public:
-      Pista(float tamanhoMax, float velocidade, structures::ArrayList<Pista *> saida);
+class Pista : public LinkedQueue<Carro> {
+public:
+    Pista(double tamanhoMax, double velocidade, double t_ger_carro, double var_t);
 
-      void enqueue(const Carro& carro);
-      Carro dequeue();
+    void enqueue(const Carro& carro);
+    Carro dequeue();
 
-      float getVelocidade();
-      float getTamanhoMax();
-      float getTamanhoOcupado();
-      float getEspacoLivre();
-      
-      bool canFit(Carro carro);
-  private:
-      structures::ArrayList<Pista *> saida;
-      
-      float tamanhoMax;
-      float tamanhoOcupado;
-      float velocidade;
+    double getVelocidade();
+    double getTamanhoMax();
+    double getTamanhoOcupado();
+    double getEspacoLivre();
+
+    bool canFit(Carro carro);
+private:
+    double tamanhoMax;
+    double tamanhoOcupado;
+    double velocidade;
+    double t_ger_carro;
+    double var_t;
 };
 
 #endif /* PISTA_H */

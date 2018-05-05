@@ -29,10 +29,10 @@ void LinkedQueue<T>::enqueue(const T& data) {
     Node *novo = new Node(data, nullptr);
     if (empty()) {
         tail = novo;
-	head = novo;
+        head = novo;
     } else {
-	tail->next(novo);
-	tail = novo;
+        tail->next(novo);
+        tail = novo;
     }
     size_++;
 }

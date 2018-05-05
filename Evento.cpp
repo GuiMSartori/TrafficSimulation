@@ -5,7 +5,7 @@ Evento::Evento(int tempo_ev, EVENT_TYPE tipo_ev) {
     this->tipo = tipo_ev;
 }
 
-bool Evento::operator >(const Evento& ev) const {
+bool Evento::operator>(const Evento& ev) const {
     return tempo > ev.getTempo();
 }
 

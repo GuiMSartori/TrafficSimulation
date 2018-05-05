@@ -8,90 +8,93 @@
 
 namespace structures {
 
-template<typename T>
-class LinkedList {
- public:
-    LinkedList();
-    ~LinkedList();
-    void clear();
-    void push_back(const T& data);
-    void push_front(const T& data);
-    void insert(const T& data, std::size_t index);
-    void insert_sorted(const T& data);
-    T& at(std::size_t index);
-    T pop(std::size_t index);
-    T pop_back();
-    T pop_front();
-    void remove(const T& data);
-    bool empty() const;
-    bool contains(const T& data) const;
-    std::size_t find(const T& data) const;
-    std::size_t size() const;
+    template<typename T>
+    class LinkedList {
+    public:
+        LinkedList();
+        ~LinkedList();
+        void clear();
+        void push_back(const T& data);
+        void push_front(const T& data);
+        void insert(const T& data, std::size_t index);
+        void insert_sorted(const T& data);
+        T& at(std::size_t index);
+        T pop(std::size_t index);
+        T pop_back();
+        T pop_front();
+        void remove(const T& data);
+        bool empty() const;
+        bool contains(const T& data) const;
+        std::size_t find(const T& data) const;
+        std::size_t size() const;
 
- private:
-    class Node {  // Elemento
-     public:
-        explicit Node(const T& data):
+    private:
+
+        class Node { // Elemento
+        public:
+            explicit Node(const T& data) :
             data_{data}
-        {}	 	  	 	      	    	   	      	    	 	   	 	
+            {
+            }
 
-        explicit Node(const T& data, Node* next):
+            explicit Node(const T& data, Node* next) :
             data_{data},
             next_{next}
-        {}
+            {
+            }
 
-        T& data() {  // getter: dado
-            return data_;
+            T& data() { // getter: dado
+                return data_;
+            }
+
+            const T& data() const { // getter const: dado
+                return data_;
+            }
+
+            Node* next() { // getter: próximo
+                return next_;
+            }
+
+            const Node* next() const { // getter const: próximo
+                return next_;
+            }
+
+            void next(Node* node) { // setter: próximo
+                next_ = node;
+            }
+
+        private:
+            T data_;
+            Node* next_{nullptr};
+        };
+
+        Node* end() { // último nodo da lista
+            auto it = head;
+            for (auto i = 1u; i < size(); ++i) {
+                it = it->next();
+            }
+            return it;
         }
 
-        const T& data() const {  // getter const: dado
-            return data_;
-        }
-
-        Node* next() {  // getter: próximo
-            return next_;
-        }
-
-        const Node* next() const {  // getter const: próximo
-            return next_;
-        }
-
-        void next(Node* node) {  // setter: próximo
-            next_ = node;
-        }
-
-     private:
-        T data_;
-        Node* next_{nullptr};
+        Node* head{nullptr};
+        std::size_t size_{0u};
     };
 
-    Node* end() {  // último nodo da lista
-        auto it = head;
-        for (auto i = 1u; i < size(); ++i) {
-            it = it->next();
-        }	 	  	 	      	    	   	      	    	 	   	 	
-        return it;
-    }
-
-    Node* head{nullptr};
-    std::size_t size_{0u};
-};
-
-}  // namespace structures
+} // namespace structures
 
 #endif
 
 template<typename T>
-structures::LinkedList<T>::LinkedList() {  // constructor
+structures::LinkedList<T>::LinkedList() { // constructor
 }
 
 template<typename T>
-structures::LinkedList<T>::~LinkedList() {  // destructor
+structures::LinkedList<T>::~LinkedList() { // destructor
     clear();
 }
 
 template<typename T>
-void structures::LinkedList<T>::clear() {  // clear
+void structures::LinkedList<T>::clear() { // clear
     Node *anterior, *proximo;
     proximo = head;
     for (int i = 0; i < size(); i++) {
@@ -103,12 +106,12 @@ void structures::LinkedList<T>::clear() {  // clear
 }
 
 template<typename T>
-void structures::LinkedList<T>::push_back(const T& data) {  // push_back
+void structures::LinkedList<T>::push_back(const T& data) { // push_back
     insert(data, size_);
-}	 	  	 	      	    	   	      	    	 	   	 	
+}
 
 template<typename T>
-void structures::LinkedList<T>::push_front(const T& data) {  // push_front
+void structures::LinkedList<T>::push_front(const T& data) { // push_front
     Node *node = new Node(data, head);
     head = node;
     size_++;
@@ -134,14 +137,14 @@ void structures::LinkedList<T>::insert(const T& data, std::size_t index) {
 }
 
 template<typename T>
-void structures::LinkedList<T>::insert_sorted(const T& data) {  // insert_sorted
+void structures::LinkedList<T>::insert_sorted(const T& data) { // insert_sorted
     Node *node = head;
     if (size_ == 0) {
         push_front(data);
         return;
     }
     for (int i = 0; i < size_; i++, node = node->next()) {
-        if (node->data() > data) {	 	  	 	      	    	   	      	    	 	   	 	
+        if (node->data() > data) {
             insert(data, i);
             return;
         }
@@ -150,7 +153,7 @@ void structures::LinkedList<T>::insert_sorted(const T& data) {  // insert_sorted
 }
 
 template<typename T>
-T& structures::LinkedList<T>::at(std::size_t index) {  // at
+T& structures::LinkedList<T>::at(std::size_t index) { // at
     if (index > size_ || index < 0) {
         throw std::out_of_range("at");
     }
@@ -162,7 +165,7 @@ T& structures::LinkedList<T>::at(std::size_t index) {  // at
 }
 
 template<typename T>
-T structures::LinkedList<T>::pop(std::size_t index) {  // pop
+T structures::LinkedList<T>::pop(std::size_t index) { // pop
     if (empty() || index < 0 || index > size_ - 1) {
         throw std::out_of_range("pop");
     }
@@ -181,15 +184,15 @@ T structures::LinkedList<T>::pop(std::size_t index) {  // pop
     delete node_delete;
     size_--;
     return retorno;
-}	 	  	 	      	    	   	      	    	 	   	 	
+}
 
 template<typename T>
-T structures::LinkedList<T>::pop_back() {  // pop_back
+T structures::LinkedList<T>::pop_back() { // pop_back
     return pop(size_ - 1);
 }
 
 template<typename T>
-T structures::LinkedList<T>::pop_front() {  // pop_front
+T structures::LinkedList<T>::pop_front() { // pop_front
     if (empty()) {
         throw std::out_of_range("pop");
     }
@@ -198,11 +201,12 @@ T structures::LinkedList<T>::pop_front() {  // pop_front
     head = node->next();
     delete node;
     size_--;
-    return retorno;;
+    return retorno;
+    ;
 }
 
 template<typename T>
-void structures::LinkedList<T>::remove(const T& data) {  // remove
+void structures::LinkedList<T>::remove(const T& data) { // remove
     pop(find(data));
 }
 
@@ -212,37 +216,37 @@ bool structures::LinkedList<T>::empty() const {
 }
 
 template<typename T>
-bool structures::LinkedList<T>::contains(const T& data) const {  // contains
+bool structures::LinkedList<T>::contains(const T& data) const { // contains
     Node *node = head;
     for (int i = 0; i < size_; i++) {
         if (node == nullptr) {
-                break;
-        }	 	  	 	      	    	   	      	    	 	   	 	
+            break;
+        }
         if (node->data() == data) {
             return true;
         }
         node = node->next();
-        }
+    }
     return false;
 }
 
 template<typename T>
-std::size_t structures::LinkedList<T>::find(const T& data) const {  // find
+std::size_t structures::LinkedList<T>::find(const T& data) const { // find
     Node *node = head;
     for (int i = 0; i < size_; i++) {
         if (node == nullptr) {
-                break;
+            break;
         }
         if (node->data() == data) {
             return i;
         }
         node = node->next();
-        }
+    }
     return size();
 }
 
 template<typename T>
-std::size_t structures::LinkedList<T>::size() const {  // size
+std::size_t structures::LinkedList<T>::size() const { // size
     return size_;
 }
-	 	  	 	      	    	   	      	    	 	   	 	
+

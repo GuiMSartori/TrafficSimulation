@@ -3,14 +3,15 @@
 #include <cstdint>
 #include <stdexcept>
 
-Pista::Pista(float tamanhoMax, float velocidade, structures::ArrayList<Pista *> saida) {
+Pista::Pista(double tamanhoMax, double velocidade, double t_ger_carro, double var_t) {
     this->tamanhoMax = tamanhoMax;
     this->velocidade = velocidade;
-    this->saida = saida;
+    this->t_ger_carro = t_ger_carro;
+    this->var_t = var_t;
 }
 
 void Pista::enqueue(const Carro& data) {
-    float tamanhoCarro = data.getTamanho();
+    double tamanhoCarro = data.getTamanho();
     if (!canFit(data)) {
         throw std::out_of_range("Pista Enqueue");
     }
@@ -26,19 +27,19 @@ Carro Pista::dequeue() {
     return LinkedQueue::dequeue();
 }
 
-float Pista::getVelocidade() {
+double Pista::getVelocidade() {
     return velocidade;
 }
 
-float Pista::getTamanhoMax() {
+double Pista::getTamanhoMax() {
     return tamanhoMax;
 }
 
-float Pista::getTamanhoOcupado() {
+double Pista::getTamanhoOcupado() {
     return tamanhoOcupado;
 }
 
-float Pista::getEspacoLivre() {
+double Pista::getEspacoLivre() {
     return tamanhoMax - tamanhoOcupado;
 }
 

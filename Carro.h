@@ -3,12 +3,12 @@
 
 class Carro {
 public:
-    Carro(float tam);
+    Carro(double tam);
 
-    float getTamanho();
-    const float getTamanho() const;
+    double getTamanho();
+    const double getTamanho() const;
 private:
-    float tamanho;
+    double tamanho;
 };
 
 #endif /* CARRO_H */
