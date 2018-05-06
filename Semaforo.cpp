@@ -23,7 +23,7 @@ void Semaforo::trocaDePista(Pista * pista) {
             break;
         }
         if (i == saida.size() - 1) {
-            throw std::exception;
+            throw std::exception();
         } 
     }
     srand(time(NULL));

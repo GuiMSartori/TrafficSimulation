@@ -55,7 +55,7 @@ void init() {
 }
 
 void initPistas() {
-    pistas = structures::LinkedList<Pista>();
+    pistas = structures::LinkedList<Pista *>();
     std::ifstream ifs;
     ifs.open("pistas.txt");
     if (ifs.is_open()) {
@@ -86,7 +86,7 @@ void initSemaforos() {
     ifs.open("semaforo.txt");
     if (ifs.is_open()) {
         for (int i = 0; i < 4; i++) {
-            structures::ArrayList<double> probs_pista = new structures::ArrayList<double>(3);
+            structures::ArrayList<double> probs_pista = structures::ArrayList<double>(3);
             char linha[40];
 
             ifs.getline(linha, 40);
@@ -99,7 +99,7 @@ void initSemaforos() {
             probs_sem1.push_back(probs_pista);
         }
         for (int i = 0; i < 4; i++) {
-            structures::ArrayList<double> probs_pista = new structures::ArrayList<double>(3);
+            structures::ArrayList<double> probs_pista = structures::ArrayList<double>(3);
             char linha[40];
 
             ifs.getline(linha, 40);
@@ -171,4 +171,8 @@ void setEntradasPistas() {
     for (int i = 0; i < 8; i++) {
         pistas.at(i)->setEntradas(entradas[i]);
     }
+}
+
+void end() {
+    
 }
