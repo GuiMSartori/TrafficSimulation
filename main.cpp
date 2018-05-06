@@ -7,33 +7,50 @@
 #include "Semaforo.h"
 
 structures::LinkedList<Evento> relogio;
-structures::LinkedList<Pista> pistas;
-structures::LinkedList<Semaforo> semaforos;
+structures::LinkedList<Pista *> pistas;
+structures::LinkedList<Semaforo *> semaforos;
 
-int tempo_total;
+int tempo_simulacao;
 int tempo_simulado;
 
 void init();
 void initPistas();
+void initSemaforos();
+void setEntradasPistas();
+void end();
 
-int main(int argc, char** argv) {
+int main() {
     init();
+    while (tempo_simulado < tempo_simulacao) {
 
-    tempo_simulado++;
+        tempo_simulado++;
+    }
+    end();
     return 0;
 }
 
 void init() {
     tempo_simulado = 0;
 
-    relogio = structures::LinkedList<Evento>();
-    relogio.insert_sorted(Evento(0, chegada_carro));
+    std::ifstream ifs;
+    ifs.open("tempo_simulado.txt");
+    if (ifs.is_open()) {
+        char linha[40];
+        ifs.getline(linha, 40);
+        tempo_simulacao = std::atoi(linha);
+        ifs.close();
+    } else
+        std::cout << "Nao foi possivel abrir tempo_simulado.txt" << std::endl;
 
-    semaforos = structures::LinkedList<Semaforo>();
 
     initPistas();
 
+    initSemaforos();
 
+    setEntradasPistas();
+    
+    relogio = structures::LinkedList<Evento>();
+    relogio.insert_sorted(Evento(0, chegada_carro));
 
 }
 
@@ -43,17 +60,75 @@ void initPistas() {
     ifs.open("pistas.txt");
     if (ifs.is_open()) {
         while (!ifs.eof()) {
-            char linha1[4], linha2[4], linha3[4], linha4[4];
-            ifs.getline(linha1, 4);
-            ifs.getline(linha2, 4);
-            ifs.getline(linha3, 4);
-            ifs.getline(linha4, 4);
+            char linha1[40], linha2[40], linha3[40], linha4[40];
+            ifs.getline(linha1, 40);
 
-            Pista pista = pista(std::atof(linha1), std::atof(linha2), std::atof(linha3), std::atof(linha4));
+            ifs.getline(linha1, 40);
+            ifs.getline(linha2, 40);
+            ifs.getline(linha3, 40);
+            ifs.getline(linha4, 40);
+
+            Pista * pista = new Pista(std::atof(linha1), std::atof(linha2), std::atof(linha3), std::atof(linha4));
             pistas.push_back(pista);
-
-            ifs.getline(linha1, 4);
         }
+        ifs.close();
     } else
-        std::cout << "Nao foi possivel abrir..." << std::endl;
+        std::cout << "Nao foi possivel abrir pistas.txt" << std::endl;
+}
+
+void initSemaforos() {
+    semaforos = structures::LinkedList<Semaforo *>();
+
+    structures::ArrayList<structures::ArrayList<double>> probs_sem1 = structures::ArrayList<structures::ArrayList<double>>(4);
+    structures::ArrayList<structures::ArrayList<double>> probs_sem2 = structures::ArrayList<structures::ArrayList<double>>(4);
+
+    std::ifstream ifs;
+    ifs.open("semaforo.txt");
+    if (ifs.is_open()) {
+        for (int i = 0; i < 4; i++) {
+            structures::ArrayList<double> probs_pista = new structures::ArrayList<double>(3);
+            char linha[40];
+
+            ifs.getline(linha, 40);
+
+            for (int i = 0; i < 3; i++) {
+                ifs.getline(linha, 40);
+                probs_pista.push_back(atof(linha));
+            }
+
+            probs_sem1.push_back(probs_pista);
+        }
+        for (int i = 0; i < 4; i++) {
+            structures::ArrayList<double> probs_pista = new structures::ArrayList<double>(3);
+            char linha[40];
+
+            ifs.getline(linha, 40);
+
+            for (int i = 0; i < 3; i++) {
+                ifs.getline(linha, 40);
+                probs_pista.push_back(atof(linha));
+            }
+
+            probs_sem2.push_back(probs_pista);
+        }
+        ifs.close();
+    } else
+        std::cout << "Nao foi possivel abrir semaforo.txt" << std::endl;
+
+    structures::ArrayList<Pista *> pistas_sem1 = structures::ArrayList<Pista*>(4);
+    structures::ArrayList<Pista *> pistas_sem2 = structures::ArrayList<Pista*>(4);
+    
+    for (int i = 0; i < 4; i++) {
+        pistas_sem1.push_back(pistas.at(i));
+    }
+    for (int i = 4; i < 8; i++) {
+        pistas_sem2.push_back(pistas.at(i));
+    }
+    
+    semaforos.push_back(new Semaforo(pistas_sem1, probs_sem1));
+    semaforos.push_back(new Semaforo(pistas_sem2, probs_sem2));
+}
+
+void setEntradasPistas() {
+    
 }

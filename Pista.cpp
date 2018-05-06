@@ -49,3 +49,19 @@ bool Pista::canFit(Carro carro) {
     }
     return false;
 }
+
+structures::ArrayList<double>& Pista::getProbabilidades() {
+    return probabilidades;
+}
+
+structures::ArrayList<Pista *>& Pista::getEntradas() {
+    return entradas;
+}
+
+void Pista::setEntradas(structures::ArrayList<Pista*> entradas) {
+    this->entradas = entradas;
+}
+
+void Pista::setProbabilidades(structures::ArrayList<double> probabilidades) {
+    this->probabilidades = probabilidades;
+}

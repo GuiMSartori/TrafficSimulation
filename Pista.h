@@ -18,6 +18,12 @@ public:
     double getTamanhoOcupado();
     double getEspacoLivre();
 
+    void setProbabilidades(structures::ArrayList<double> probabilidades);
+    void setEntradas(structures::ArrayList<Pista *> entradas);
+    
+    structures::ArrayList<double>& getProbabilidades();
+    structures::ArrayList<Pista *>& getEntradas();
+    
     bool canFit(Carro carro);
 private:
     double tamanhoMax;
@@ -25,6 +31,10 @@ private:
     double velocidade;
     double t_ger_carro;
     double var_t;
+    
+    structures::ArrayList<Pista *> entradas;
+    
+    structures::ArrayList<double> probabilidades;
 };
 
 #endif /* PISTA_H */

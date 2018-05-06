@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include "Semaforo.h"
 
-Semaforo::Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<Pista *> entrada, structures::ArrayList<double> probabilidades) {
+Semaforo::Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<structures::ArrayList<double>> probabilidades) {
     this->saida = saida;
-    this->entrada = entrada;
     this->probabilidades = probabilidades;
 }
 
@@ -23,20 +22,23 @@ void Semaforo::trocaDePista(Pista * pista) {
             index = i;
             break;
         }
+        if (i == saida.size() - 1) {
+            throw std::exception;
+        } 
     }
     srand(time(NULL));
     int evento = rand() % 100;
-    if (0 <= evento && evento < probabilidades[0]) {
-        if (entrada[0]->canFit(saida[index]->front())) {
-            entrada[0]->enqueue(saida[index]->dequeue());
+    if (0 <= evento && evento < probabilidades[index][0]) {
+        if (saida[index]->getEntradas()[0]->canFit(saida[index]->front())) {
+            saida[index]->getEntradas()[0]->enqueue(saida[index]->dequeue());
         }
-    } else if (probabilidades[0] <= evento && evento < probabilidades[1]) {
-        if (entrada[1]->canFit(saida[index]->front())) {
-            entrada[1]->enqueue(saida[index]->dequeue());
+    } else if (probabilidades[index][0] <= evento && evento < probabilidades[index][1]) {
+        if (saida[index]->getEntradas()[1]->canFit(saida[index]->front())) {
+            saida[index]->getEntradas()[1]->enqueue(saida[index]->dequeue());
         }
     } else {
-        if (entrada[2]->canFit(saida[index]->front())) {
-            entrada[2]->enqueue(saida[index]->dequeue());
+        if (saida[index]->getEntradas()[2]->canFit(saida[index]->front())) {
+            saida[index]->getEntradas()[2]->enqueue(saida[index]->dequeue());
         }
     }
 }
