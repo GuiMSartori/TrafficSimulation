@@ -2,12 +2,20 @@
 #include "LinkedQueue.cpp"
 #include <cstdint>
 #include <stdexcept>
+#include <time.h>
+#include <stdlib.h>
 
-Pista::Pista(double tamanhoMax, double velocidade, double t_ger_carro, double var_t) {
+Pista::Pista(double tamanhoMax, double velocidade, int t_ger_carro, int var_t) {
     this->tamanhoMax = tamanhoMax;
     this->velocidade = velocidade;
     this->t_ger_carro = t_ger_carro;
     this->var_t = var_t;
+    this->entradas = NULL;
+}
+
+Pista::~Pista() {
+    delete entradas;
+    clear();
 }
 
 void Pista::enqueue(const Carro& data) {
@@ -43,6 +51,14 @@ double Pista::getEspacoLivre() {
     return tamanhoMax - tamanhoOcupado;
 }
 
+int Pista::getTempoGeracao() {
+    srand(time(NULL));
+    int var = rand() % (var_t * 2);
+    int tempo = t_ger_carro - var_t + var;
+    return tempo;
+}
+
+
 bool Pista::canFit(Carro carro) {
     if (carro.getTamanho() + 3 + tamanhoOcupado <= tamanhoMax) {
         return true;
@@ -50,18 +66,10 @@ bool Pista::canFit(Carro carro) {
     return false;
 }
 
-structures::ArrayList<double>& Pista::getProbabilidades() {
-    return probabilidades;
-}
-
-structures::ArrayList<Pista *>& Pista::getEntradas() {
+structures::ArrayList<Pista *> * Pista::getEntradas() {
     return entradas;
 }
 
-void Pista::setEntradas(structures::ArrayList<Pista*> entradas) {
+void Pista::setEntradas(structures::ArrayList<Pista*> * entradas) {
     this->entradas = entradas;
-}
-
-void Pista::setProbabilidades(structures::ArrayList<double> probabilidades) {
-    this->probabilidades = probabilidades;
 }

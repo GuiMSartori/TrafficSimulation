@@ -24,21 +24,21 @@ void Semaforo::trocaDePista(Pista * pista) {
         }
         if (i == saida.size() - 1) {
             throw std::exception();
-        } 
+        }
     }
     srand(time(NULL));
     int evento = rand() % 100;
     if (0 <= evento && evento < probabilidades[index][0]) {
-        if (saida[index]->getEntradas()[0]->canFit(saida[index]->front())) {
-            saida[index]->getEntradas()[0]->enqueue(saida[index]->dequeue());
+        if (saida[index]->getEntradas()->at(0)->canFit(saida[index]->front())) {
+            saida[index]->getEntradas()->at(0)->enqueue(saida[index]->dequeue());
         }
     } else if (probabilidades[index][0] <= evento && evento < probabilidades[index][1]) {
-        if (saida[index]->getEntradas()[1]->canFit(saida[index]->front())) {
-            saida[index]->getEntradas()[1]->enqueue(saida[index]->dequeue());
+        if (saida[index]->getEntradas()->at(1)->canFit(saida[index]->front())) {
+            saida[index]->getEntradas()->at(1)->enqueue(saida[index]->dequeue());
         }
     } else {
-        if (saida[index]->getEntradas()[2]->canFit(saida[index]->front())) {
-            saida[index]->getEntradas()[2]->enqueue(saida[index]->dequeue());
+        if (saida[index]->getEntradas()->at(2)->canFit(saida[index]->front())) {
+            saida[index]->getEntradas()->at(2)->enqueue(saida[index]->dequeue());
         }
     }
 }

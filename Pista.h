@@ -8,7 +8,8 @@
 
 class Pista : public LinkedQueue<Carro> {
 public:
-    Pista(double tamanhoMax, double velocidade, double t_ger_carro, double var_t);
+    Pista(double tamanhoMax, double velocidade, int t_ger_carro, int var_t);
+    ~Pista();
 
     void enqueue(const Carro& carro);
     Carro dequeue();
@@ -18,23 +19,21 @@ public:
     double getTamanhoOcupado();
     double getEspacoLivre();
 
-    void setProbabilidades(structures::ArrayList<double> probabilidades);
-    void setEntradas(structures::ArrayList<Pista *> entradas);
-    
-    structures::ArrayList<double>& getProbabilidades();
-    structures::ArrayList<Pista *>& getEntradas();
-    
+    int getTempoGeracao();
+
+    void setEntradas(structures::ArrayList<Pista *> * entradas);
+
+    structures::ArrayList<Pista *> * getEntradas();
+
     bool canFit(Carro carro);
 private:
     double tamanhoMax;
     double tamanhoOcupado;
     double velocidade;
-    double t_ger_carro;
-    double var_t;
-    
-    structures::ArrayList<Pista *> entradas;
-    
-    structures::ArrayList<double> probabilidades;
+    int t_ger_carro;
+    int var_t;
+
+    structures::ArrayList<Pista *> * entradas;
 };
 
 #endif /* PISTA_H */
