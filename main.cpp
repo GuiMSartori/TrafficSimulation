@@ -48,7 +48,7 @@ void init() {
     initSemaforos();
 
     setEntradasPistas();
-    
+
     relogio = structures::LinkedList<Evento>();
     relogio.insert_sorted(Evento(0, chegada_carro));
 
@@ -117,18 +117,58 @@ void initSemaforos() {
 
     structures::ArrayList<Pista *> pistas_sem1 = structures::ArrayList<Pista*>(4);
     structures::ArrayList<Pista *> pistas_sem2 = structures::ArrayList<Pista*>(4);
-    
+
     for (int i = 0; i < 4; i++) {
         pistas_sem1.push_back(pistas.at(i));
     }
     for (int i = 4; i < 8; i++) {
         pistas_sem2.push_back(pistas.at(i));
     }
-    
+
     semaforos.push_back(new Semaforo(pistas_sem1, probs_sem1));
     semaforos.push_back(new Semaforo(pistas_sem2, probs_sem2));
 }
 
 void setEntradasPistas() {
-    
+    structures::ArrayList<Pista *> entradas[8];
+
+    for (int i = 0; i < 8; i++) {
+        entradas[i] = structures::ArrayList<Pista *>(3);
+    }
+
+    entradas[0].push_back(pistas.at(4));
+    entradas[0].push_back(pistas.at(9));
+    entradas[0].push_back(pistas.at(10));
+
+    entradas[1].push_back(pistas.at(4));
+    entradas[1].push_back(pistas.at(8));
+    entradas[1].push_back(pistas.at(10));
+
+    entradas[2].push_back(pistas.at(4));
+    entradas[2].push_back(pistas.at(9));
+    entradas[2].push_back(pistas.at(8));
+
+    entradas[3].push_back(pistas.at(8));
+    entradas[3].push_back(pistas.at(9));
+    entradas[3].push_back(pistas.at(10));
+
+    entradas[4].push_back(pistas.at(12));
+    entradas[4].push_back(pistas.at(11));
+    entradas[4].push_back(pistas.at(13));
+
+    entradas[5].push_back(pistas.at(12));
+    entradas[5].push_back(pistas.at(3));
+    entradas[5].push_back(pistas.at(13));
+
+    entradas[6].push_back(pistas.at(12));
+    entradas[6].push_back(pistas.at(11));
+    entradas[6].push_back(pistas.at(3));
+
+    entradas[7].push_back(pistas.at(11));
+    entradas[7].push_back(pistas.at(3));
+    entradas[7].push_back(pistas.at(13));
+
+    for (int i = 0; i < 8; i++) {
+        pistas.at(i)->setEntradas(entradas[i]);
+    }
 }

@@ -1,69 +1,69 @@
-- O1 leste
+0 - O1 leste
 2000
 22
 10
 2
-- N1 sul
+1 - N1 sul
 500
 17
 20
 5
-- S1 norte
+2 - S1 norte
 500
 17
 30
 7
-- C1 oeste
+3 - C1 oeste
 300
 17
 0
 0
-- C1 leste
+4 - C1 leste
 300
 17
 0
 0
-- N2 sul
+5 - N2 sul
 500
 11
 20
 5
-- S2 norte
+6 - S2 norte
 500
 11
 60
 15
-- L1 oeste
+7 - L1 oeste
 400
 8
 10
 2
-- O1 oeste
+8 - O1 oeste
 2000
 22
 0
 0
-- N1 norte
+9 - N1 norte
 500
 17
 0
 0
-- S1 sul
+10 - S1 sul
 500
 17
 0
 0
-- N2 norte
+11 - N2 norte
 500
 11
 0
 0
-- L1 leste
+12 - L1 leste
 400
 8
 0
 0
-- S2 sul
+13 - S2 sul
 500
 11
 0
