@@ -2,13 +2,17 @@
 #include <stdlib.h>
 #include "Semaforo.h"
 
-Semaforo::Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<structures::ArrayList<double>> probabilidades) {
+Semaforo::Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<double> * probabilidades) {
     this->saida = saida;
     this->probabilidades = probabilidades;
     for (int i = 0; i < 4; i++) {
         this->sinal[i] = false;
     }
     index_aberto = -1;
+}
+
+Semaforo::~Semaforo() {
+    delete[] probabilidades;
 }
 
 void Semaforo::mudaSinal() {
