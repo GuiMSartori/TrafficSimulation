@@ -10,9 +10,11 @@ enum EVENT_TYPE {
 class Evento {
 public:
     Evento(int * dado, int tempo_ev, EVENT_TYPE tipo_ev);
-    ~Evento();
-    int getTempo() const;
+
     int getTempo();
+    int getTempo() const;
+    int getFonte();
+    int getFonte() const;
     int * getDado();
     int * getDado() const;
     EVENT_TYPE getTipo();
@@ -23,6 +25,7 @@ public:
     bool operator>(const Evento& ev);
     bool operator>(const Evento& ev) const;
 private:
+    int index_fonte;
     int tempo;
     EVENT_TYPE tipo;
     int * dado;

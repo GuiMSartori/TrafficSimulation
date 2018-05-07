@@ -104,8 +104,14 @@ void structures::ArrayList<T>::push_front(T data) { // push_front
 
 template<typename T>
 void structures::ArrayList<T>::insert(T data, std::size_t index) { // insert
-    if (full() || index < 0 || index > size_ + 1) {
-        throw std::out_of_range("insert");
+    if (full()) {
+        throw std::out_of_range("insert array cheio");
+    }
+    if (index < 0) {
+        throw std::out_of_range("insert array index<0");
+    }
+    if (index > size_ + 1) {
+        throw std::out_of_range("insert array size_ + 1");
     }
     for (int i = size_ + 1; i > index; i--) {
         this->contents[i] = this->contents[i - 1];

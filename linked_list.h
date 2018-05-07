@@ -154,8 +154,11 @@ void structures::LinkedList<T>::insert_sorted(const T& data) { // insert_sorted
 
 template<typename T>
 T& structures::LinkedList<T>::at(std::size_t index) { // at
-    if (index > size_ || index < 0) {
-        throw std::out_of_range("at");
+    if (index > size_) {
+        throw std::out_of_range("at, index > size");
+    }
+    if (index < 0) {
+        throw std::out_of_range("at, index < 0");
     }
     Node *node = head;
     for (int i = 0; i < index; i++) {
@@ -249,4 +252,3 @@ template<typename T>
 std::size_t structures::LinkedList<T>::size() const { // size
     return size_;
 }
-

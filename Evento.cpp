@@ -1,13 +1,13 @@
 #include "Evento.h"
 
 Evento::Evento(int * dado, int tempo_ev, EVENT_TYPE tipo_ev) {
+    this->index_fonte = index_fonte;
     this->tempo = tempo_ev;
     this->tipo = tipo_ev;
+    this->dado = new int[3];
     this->dado = dado;
-}
 
-Evento::~Evento() {
-    delete[] dado;
+
 }
 
 bool Evento::operator>(const Evento& ev) const {
@@ -25,6 +25,14 @@ int Evento::getTempo() const {
 
 int Evento::getTempo() {
     return tempo;
+}
+
+int Evento::getFonte() const {
+    return index_fonte;
+}
+
+int Evento::getFonte() {
+    return index_fonte;
 }
 
 EVENT_TYPE Evento::getTipo() const {
