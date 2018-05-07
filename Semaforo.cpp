@@ -5,44 +5,55 @@
 Semaforo::Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<structures::ArrayList<double>> probabilidades) {
     this->saida = saida;
     this->probabilidades = probabilidades;
+    for (int i = 0; i < 4; i++) {
+        this->sinal[i] = false;
+    }
+    index_aberto = -1;
 }
 
 void Semaforo::mudaSinal() {
-    if (aberto) {
-        aberto = false;
+    for (int i = 0; i < 4; i++) {
+        if (sinal[i]) {
+            sinal[i] = false;
+            return;
+        }
+    }
+    if (index_aberto != 3)
+        index_aberto++;
+    else
+        index_aberto = 0;
+
+    sinal[index_aberto] = true;
+}
+
+void Semaforo::trocaDePista(int index, int destino) {
+    if (saida[index]->getEntradas()->at(destino)->canFit(saida[index]->front())) {
+        saida[index]->getEntradas()->at(destino)->enqueue(saida[index]->dequeue());
     } else {
-        aberto = true;
+        throw std::out_of_range("trocaDePista");
     }
 }
 
-void Semaforo::trocaDePista(Pista * pista) {
-    int index = 0;
-    for (int i = 0; i < saida.size(); i++) {
-        if (saida[i] == pista) {
-            index = i;
-            break;
-        }
-        if (i == saida.size() - 1) {
-            throw std::exception();
-        }
-    }
+int Semaforo::gerarDestino(int index) {
     srand(time(NULL));
     int evento = rand() % 100;
     if (0 <= evento && evento < probabilidades[index][0]) {
-        if (saida[index]->getEntradas()->at(0)->canFit(saida[index]->front())) {
-            saida[index]->getEntradas()->at(0)->enqueue(saida[index]->dequeue());
-        }
+        return 0;
     } else if (probabilidades[index][0] <= evento && evento < probabilidades[index][1]) {
-        if (saida[index]->getEntradas()->at(1)->canFit(saida[index]->front())) {
-            saida[index]->getEntradas()->at(1)->enqueue(saida[index]->dequeue());
-        }
+        return 1;
     } else {
-        if (saida[index]->getEntradas()->at(2)->canFit(saida[index]->front())) {
-            saida[index]->getEntradas()->at(2)->enqueue(saida[index]->dequeue());
-        }
+        return 2;
     }
 }
 
-bool Semaforo::isAberto() {
-    return aberto;
+bool Semaforo::isAberto(int index) {
+    return sinal[index];
+}
+
+Pista * Semaforo::getSaida(int index) {
+    return saida.at(index);
+}
+
+int Semaforo::getPistaAberta() {
+    return index_aberto;
 }

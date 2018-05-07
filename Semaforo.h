@@ -7,10 +7,16 @@ class Semaforo {
 public:
     Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<structures::ArrayList<double>> probabilidades);
     void mudaSinal();
-    void trocaDePista(Pista * pista);
-    bool isAberto();
+    void trocaDePista(int index, int destino);
+    bool isAberto(int index);
+    
+    int gerarDestino(int index);
+    
+    Pista * getSaida(int index);
+    int getPistaAberta();
 private:
-    bool aberto;
+    int index_aberto;
+    bool sinal[4];
     structures::ArrayList<Pista *> saida;
     structures::ArrayList<structures::ArrayList<double>> probabilidades;
 };

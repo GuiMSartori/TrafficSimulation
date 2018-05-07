@@ -9,18 +9,19 @@ enum EVENT_TYPE {
 
 class Evento {
 public:
-    Evento(Pista * pista, int tempo_ev, EVENT_TYPE tipo_ev);
+    Evento(void * dado, int tempo_ev, EVENT_TYPE tipo_ev);
 
     int getTempo() const;
-
-    Pista * getPista() const;
+    void * getDado() const;
     EVENT_TYPE getTipo() const;
 
+    void setTempo(int tempo);
+    
     bool operator>(const Evento& ev) const;
 private:
     int tempo;
     EVENT_TYPE tipo;
-    Pista * pista;
+    void * dado;
 };
 
 #endif /* EVENTO_H */
