@@ -8,7 +8,7 @@ Semaforo::Semaforo(structures::ArrayList<Pista *> saida, structures::ArrayList<d
     for (int i = 0; i < 4; i++) {
         this->sinal[i] = false;
     }
-    index_aberto = -1;
+    index_aberto = 0;
 }
 
 Semaforo::~Semaforo() {
@@ -16,18 +16,19 @@ Semaforo::~Semaforo() {
 }
 
 void Semaforo::mudaSinal() {
-    for (int i = 0; i < 4; i++) {
-        if (sinal[i]) {
+    for (auto i = 0; i < 4; i++) {
+        if (sinal[i] == true) {
             sinal[i] = false;
             return;
         }
     }
-    if (index_aberto != 3)
-        index_aberto++;
-    else
+    if (index_aberto >= 3) {
         index_aberto = 0;
-
+    } else {
+        index_aberto++;
+    }
     sinal[index_aberto] = true;
+    return;
 }
 
 void Semaforo::trocaDePista(int index, int destino) {

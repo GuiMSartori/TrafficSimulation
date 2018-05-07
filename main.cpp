@@ -251,7 +251,6 @@ void mudancaDoSemaforo() {
     std::cout << "Mudando semaforos..." << std::endl;
     semaforos.at(0)->mudaSinal();
     semaforos.at(1)->mudaSinal();
-
     relogio.insert_sorted(Evento(NULL, tempo_simulado + periodo_semaforo, MUDANCA_DO_SEMAFORO));
     std::cout << "Semaforos mudados." << std::endl;
 }
@@ -266,16 +265,16 @@ void chegadaAoSemaforo(Evento evento) {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 4; j++) {
             if ((Pista *) evento.getDado() == semaforos.at(i)->getSaida(j)) {
-                index[0] = j;
-                index[1] = i;
+                index[0] = i;
+                index[1] = j;
+                std::cout << "..." << std::endl;
                 break;
             }
         }
-        if (index[0] != -1) break;
+        if (index[0] != -1)
+          break;
     }
-
     index[2] = semaforos.at(index[0])->gerarDestino(index[1]);
-
     int tempo_de_troca_de_pista = calculaTempoDeTrocaDePista(index);
 
     relogio.insert_sorted(Evento((void *) index, tempo_de_troca_de_pista, TROCA_DE_PISTA));
