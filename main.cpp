@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "linked_list.h"
 #include "LinkedQueue.h"
-#include "Evento.h"
-#include "Semaforo.h"
+#include "Evento.cpp"
+#include "Semaforo.cpp"
 
 structures::LinkedList<Evento> relogio;
 structures::LinkedList<Pista *> pistas;

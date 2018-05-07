@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include "LinkedQueue.h"
-#include "Carro.h"
+#include "Carro.cpp"
 #include "array_list.h"
 
 class Pista : public LinkedQueue<Carro> {

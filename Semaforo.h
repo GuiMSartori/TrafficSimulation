@@ -1,7 +1,7 @@
 #ifndef SEMAFORO_H
 #define SEMAFORO_H
 
-#include "Pista.h"
+#include "Pista.cpp"
 
 class Semaforo {
 public:
