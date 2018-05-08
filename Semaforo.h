@@ -10,6 +10,7 @@ public:
     void mudaSinal();
     void trocaDePista(int index, int destino);
     bool isAberto(int index);
+    bool isFechado();
 
     int gerarDestino(int index);
 

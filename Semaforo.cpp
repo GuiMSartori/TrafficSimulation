@@ -31,7 +31,7 @@ void Semaforo::mudaSinal() {
 }
 
 void Semaforo::trocaDePista(int index, int destino) {
-    if (saida->at(index)->getEntradas()[destino]->canFit(saida->at(index)->front())) {
+    if (saida->at(index)->getEntradas()[destino]->canFit(saida->at(index)->front()) && isAberto(index)) {
         saida->at(index)->getEntradas()[destino]->enqueue(saida->at(index)->dequeue());
     } else {
         throw std::out_of_range("trocaDePista");
@@ -52,6 +52,14 @@ int Semaforo::gerarDestino(int index) {
 
 bool Semaforo::isAberto(int index) {
     return sinal[index];
+}
+
+bool Semaforo::isFechado() {
+    for (int i = 0; i < 4; i++) {
+        if (sinal[i])
+            return false;
+    }
+    return true;
 }
 
 structures::LinkedList<Pista *> * Semaforo::getSaidas() {
