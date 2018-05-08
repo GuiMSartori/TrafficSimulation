@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "Semaforo.h"
 
-Semaforo::Semaforo(structures::ArrayList<Pista *> saida, double ** probabilidades) {
+Semaforo::Semaforo(structures::LinkedList<Pista *> * saida, double ** probabilidades) {
     this->saida = saida;
     this->probabilidades = probabilidades;
     for (int i = 0; i < 4; i++) {
@@ -31,8 +31,8 @@ void Semaforo::mudaSinal() {
 }
 
 void Semaforo::trocaDePista(int index, int destino) {
-    if (saida[index]->getEntradas()->at(destino)->canFit(saida[index]->front())) {
-        saida[index]->getEntradas()->at(destino)->enqueue(saida[index]->dequeue());
+    if (saida->at(index)->getEntradas()[destino]->canFit(saida->at(index)->front())) {
+        saida->at(index)->getEntradas()[destino]->enqueue(saida->at(index)->dequeue());
     } else {
         throw std::out_of_range("trocaDePista");
     }
@@ -55,8 +55,8 @@ bool Semaforo::isAberto(int index) {
     return sinal[index];
 }
 
-Pista * Semaforo::getSaida(int index) {
-    return saida.at(index);
+structures::LinkedList<Pista *> * Semaforo::getSaidas() {
+    return saida;
 }
 
 int Semaforo::getPistaAberta() {

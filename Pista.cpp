@@ -5,17 +5,12 @@
 #include <time.h>
 #include <stdlib.h>
 
-Pista::Pista(double tamanhoMax, double velocidade, int t_ger_carro, int var_t) {
+Pista::Pista(double tamanhoMax, double velocidade, int t_ger_carro, int t_var) {
     this->tamanhoMax = tamanhoMax;
     this->velocidade = velocidade;
     this->t_ger_carro = t_ger_carro;
-    this->var_t = var_t;
-    this->entradas = NULL;
-}
-
-Pista::~Pista() {
-    delete entradas;
-    clear();
+    this->t_var = t_var;
+    this->entradas = new Pista *[3];
 }
 
 void Pista::enqueue(const Carro& data) {
@@ -35,29 +30,28 @@ Carro Pista::dequeue() {
     return LinkedQueue::dequeue();
 }
 
-double Pista::getVelocidade() {
+double Pista::getVelocidade() const {
     return velocidade;
 }
 
-double Pista::getTamanhoMax() {
+double Pista::getTamanhoMax() const {
     return tamanhoMax;
 }
 
-double Pista::getTamanhoOcupado() {
+double Pista::getTamanhoOcupado()  const {
     return tamanhoOcupado;
 }
 
-double Pista::getEspacoLivre() {
+double Pista::getEspacoLivre() const {
     return tamanhoMax - tamanhoOcupado;
 }
 
-int Pista::getTempoGeracao() {
+int Pista::getTempoGeracao() const {
     srand(time(NULL));
-    int var = rand() % (var_t * 2);
-    int tempo = t_ger_carro - var_t + var;
+    int var = rand() % (t_var * 2);
+    int tempo = t_ger_carro - t_var + var;
     return tempo;
 }
-
 
 bool Pista::canFit(Carro carro) {
     if (carro.getTamanho() + 3 + tamanhoOcupado <= tamanhoMax) {
@@ -66,10 +60,10 @@ bool Pista::canFit(Carro carro) {
     return false;
 }
 
-structures::ArrayList<Pista *> * Pista::getEntradas() {
+Pista ** Pista::getEntradas() {
     return entradas;
 }
 
-void Pista::setEntradas(structures::ArrayList<Pista*> * entradas) {
+void Pista::setEntradas(Pista ** entradas) {
     this->entradas = entradas;
 }

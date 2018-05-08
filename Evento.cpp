@@ -1,54 +1,54 @@
 #include "Evento.h"
 
-Evento::Evento(int * dado, int tempo_ev, EVENT_TYPE tipo_ev) {
-    this->index_fonte = index_fonte;
+Evento::Evento(int index_semaforo, int index_pista, int index_destino, int tempo_ev, EVENT_TYPE tipo_ev) {
+    this->index_semaforo = index_semaforo;
+    this->index_pista = index_pista;
+    this->index_destino = index_destino;
     this->tempo = tempo_ev;
     this->tipo = tipo_ev;
-    this->dado = new int[3];
-    this->dado = dado;
-
-
-}
-
-bool Evento::operator>(const Evento& ev) const {
-    return tempo > ev.getTempo();
-}
-
-bool Evento::operator>(const Evento& ev) {
-    return tempo > ev.getTempo();
 }
 
 
-int Evento::getTempo() const {
-    return tempo;
+int Evento::getSemaforo() {
+    return index_semaforo;
 }
+
+int Evento::getSemaforo() const {
+    return index_semaforo;
+}
+
+
+int Evento::getPista() {
+    return index_pista;
+}
+
+int Evento::getPista() const {
+    return index_pista;
+}
+
+int Evento::getDestino() {
+    return index_destino;
+}
+
+int Evento::getDestino() const {
+    return index_destino;
+}
+
 
 int Evento::getTempo() {
     return tempo;
 }
 
-int Evento::getFonte() const {
-    return index_fonte;
-}
-
-int Evento::getFonte() {
-    return index_fonte;
-}
-
-EVENT_TYPE Evento::getTipo() const {
-    return tipo;
+int Evento::getTempo() const {
+    return tempo;
 }
 
 EVENT_TYPE Evento::getTipo() {
     return tipo;
 }
 
-int * Evento::getDado() const {
-    return dado;
-}
-
-int * Evento::getDado() {
-    return dado;
+EVENT_TYPE Evento::getTipo() const {
+    return tipo;
 }
 
 void Evento::setTempo(int tempo) {
