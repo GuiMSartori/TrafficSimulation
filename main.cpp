@@ -323,8 +323,15 @@ void trocaDePista(Evento * evento) {
         std::cout << "Trocou com sucesso." << std::endl;
     } catch (std::out_of_range ex) {
         int tempo_evento;
-        if (!semaforos.at(sem_index)->isAberto(pista_index)) {
-            tempo_evento = evento->getTempo() + periodo_semaforo - (tempo_simulado % periodo_semaforo);
+        if (semaforos.at(sem_index)->isFechado()) {
+            Evento * evento;
+            for (int i = 0; i < relogio.size(); i++) {
+                if (relogio.at(i)->getTipo() == MUDANCA_DO_SEMAFORO) {
+                    evento = relogio.at(i);
+                    break;
+                }
+            }
+            tempo_evento = evento->getTempo() + 1;
             std::cout << "Semaforo fechado." << std::endl;
         } else {
             tempo_evento = evento->getTempo() + 1;
