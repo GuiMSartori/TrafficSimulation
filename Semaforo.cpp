@@ -39,7 +39,6 @@ void Semaforo::trocaDePista(int index, int destino) {
 }
 
 int Semaforo::gerarDestino(int index) {
-    std::cout << index << '\n';
     srand(time(NULL));
     int evento = rand() % 100;
     if (0 <= evento && evento < probabilidades[index][0]) {
