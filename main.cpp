@@ -17,46 +17,41 @@ int tempo_simulacao;
 int tempo_simulado;
 int periodo_semaforo;
 
-void init();
+void init(int argc, char** argv);
 void initPistas();
 void initSemaforos();
 void setEntradasPistas();
 void initRelogio();
 
 void execEventos();
-void geracaoDeCarro(Evento * evento);
-void mudancaDoSemaforo();
-void chegadaAoSemaforo(Evento * evento);
-void trocaDePista(Evento * evento);
-void insereNoRelogio(Evento * evento);
+void gerarCarro(Evento * evento);
+void mudarSemaforo();
+void chegadaAoFimDaPista(Evento * evento);
+void trocarPista(Evento * evento);
+void inserirNoRelogio(Evento * evento);
 
 void finalize();
 
-int main() {
-    init();
-    std::cout << tempo_simulacao << '\n';
+int main(int argc, char** argv) {
+    if (argc != 3) {
+        std::cout << "Use " << argv[0] << " <tempo de simulação> <periodo do semaforo>" << std::endl;
+        return 1;
+    }
+    init(argc, argv);
+    std::cout << "\nSIMULAÇÃO INICIADA.\n" << "TEMPO DE SIMULAÇÃO: " << tempo_simulacao << "s\n" << std::endl;
     while (tempo_simulado < tempo_simulacao) {
         execEventos();
         tempo_simulado++;
     }
     finalize();
+
     return 0;
 }
 
-void init() {
+void init(int argc, char** argv) {
     tempo_simulado = 0;
-
-    std::ifstream ifs;
-    ifs.open("tempo_simulacao.txt");
-    if (ifs.is_open()) {
-        char linha[40], linha2[40];
-        ifs.getline(linha, 40);
-        tempo_simulacao = std::atoi(linha);
-        ifs.getline(linha2, 40);
-        periodo_semaforo = std::atoi(linha2);
-        ifs.close();
-    } else
-        std::cout << "Nao foi possivel abrir tempo_simulacao.txt" << std::endl;
+    tempo_simulacao = std::atoi(argv[1]);
+    periodo_semaforo = std::atoi(argv[2]);
 
     initPistas();
     initSemaforos();
@@ -65,7 +60,6 @@ void init() {
 }
 
 void initPistas() {
-    std::cout << "initPistas" << '\n';
     pistas = structures::DoublyLinkedList<Pista *>();
     sumidouros = structures::DoublyLinkedList<Pista *>();
     fontes = structures::DoublyLinkedList<Pista *>();
@@ -96,11 +90,9 @@ void initPistas() {
         }
         fontes.push_back(pistas.at(i));
     }
-    std::cout << "fim initPistas" << '\n';
 }
 
 void initSemaforos() {
-    std::cout << "initSemaforos" << '\n';
     semaforos = structures::DoublyLinkedList<Semaforo *>();
 
     int ** probs_sem1 = new int * [4];
@@ -148,11 +140,9 @@ void initSemaforos() {
     }
     semaforos.push_back(new Semaforo(pistas_sem1, probs_sem1));
     semaforos.push_back(new Semaforo(pistas_sem2, probs_sem2));
-    std::cout << "fim initSemaforos" << '\n';
 }
 
 void setEntradasPistas() {
-    std::cout << "setEntradasPistas" << '\n';
     Pista *** entradas = new Pista **[8];
 
     for (int i = 0; i < 8; i++) {
@@ -194,47 +184,44 @@ void setEntradasPistas() {
     for (int i = 0; i < 8; i++) {
         pistas.at(i)->setEntradas(entradas[i]);
     }
-    std::cout << "fim setEntradasPistas" << '\n';
 }
 
 void initRelogio() {
-    std::cout << "initRelogio" << '\n';
     relogio = structures::DoublyLinkedList<Evento *>();
-    insereNoRelogio(new Evento(-1, -1, -1, periodo_semaforo, MUDANCA_DO_SEMAFORO));
+    inserirNoRelogio(new Evento(-1, -1, -1, periodo_semaforo, MUDANCA_DO_SEMAFORO));
     for (int i = 0; i < fontes.size(); i++) {
         int sem_index = (i < 3) ? 0 : 1;
         int pista_index = semaforos.at(sem_index)->getSaidas()->find(fontes.at(i));
-        insereNoRelogio(new Evento(sem_index, pista_index, sem_index, fontes.at(i)->getTempoGeracao(), GERACAO_DE_CARRO));
+        inserirNoRelogio(new Evento(sem_index, pista_index, sem_index, fontes.at(i)->getTempoGeracao(), GERACAO_DE_CARRO));
     }
-    std::cout << "fim initRelogio" << '\n';
 }
 
 void execEventos() {
     while (tempo_simulado == relogio.at(0)->getTempo()) {
-        std::cout << tempo_simulado << '\n';
+        std::cout << "EVENTO (" << tempo_simulado << "s): "<< std::endl;
         Evento * evento = relogio.pop_front();
         switch (evento->getTipo()) {
             case GERACAO_DE_CARRO:
-                geracaoDeCarro(evento);
+                gerarCarro(evento);
                 break;
 
             case MUDANCA_DO_SEMAFORO:
-                mudancaDoSemaforo();
+                mudarSemaforo();
                 break;
 
-            case CHEGADA_AO_SEMAFORO:
-                chegadaAoSemaforo(evento);
+            case CHEGADA_AO_FIM_DA_PISTA:
+                chegadaAoFimDaPista(evento);
                 break;
 
             case TROCA_DE_PISTA:
-                trocaDePista(evento);
+                trocarPista(evento);
                 break;
         }
         delete evento;
     }
 }
 
-void geracaoDeCarro(Evento * evento) {
+void gerarCarro(Evento * evento) {
     std::cout << "Gerando carro..." << std::endl;
 
     int sem_index = evento->getSemaforo();
@@ -247,22 +234,22 @@ void geracaoDeCarro(Evento * evento) {
         pista->enqueue(carro);
 
         int tempo_percurso = (int) (pista->getTamanhoMax() / pista->getVelocidade());
-        Evento * eve = new Evento(sem_index, pista_index, -1, tempo_simulado + tempo_percurso, CHEGADA_AO_SEMAFORO);
-        insereNoRelogio(eve);
+        Evento * eve = new Evento(sem_index, pista_index, -1, tempo_simulado + tempo_percurso, CHEGADA_AO_FIM_DA_PISTA);
+        inserirNoRelogio(eve);
 
         std::cout << "Carro gerado." << std::endl;
     } catch (std::out_of_range ex) {
         std::cout << "Pista cheia." << std::endl;
     }
     Evento * ev = new Evento(sem_index, pista_index, -1, tempo_simulado + pista->getTempoGeracao(), GERACAO_DE_CARRO);
-    insereNoRelogio(ev);
+    inserirNoRelogio(ev);
 }
 
-void mudancaDoSemaforo() {
-    std::cout << "Mudando semaforos..." << std::endl;
+void mudarSemaforo() {
+    std::cout << "Mudando semáforos..." << std::endl;
 
-    semaforos.at(0)->mudaSinal();
-    semaforos.at(1)->mudaSinal();
+    semaforos.at(0)->mudarSinal();
+    semaforos.at(1)->mudarSinal();
     int tempo_ev = tempo_simulado;
 
     if (semaforos.at(0)->isFechado()) {
@@ -270,13 +257,13 @@ void mudancaDoSemaforo() {
     } else {
         tempo_ev += periodo_semaforo;
     }
-    insereNoRelogio(new Evento(-1, -1, -1, tempo_ev, MUDANCA_DO_SEMAFORO));
+    inserirNoRelogio(new Evento(-1, -1, -1, tempo_ev, MUDANCA_DO_SEMAFORO));
 
-    std::cout << "Semaforos mudados." << std::endl;
+    std::cout << "Semáforos mudados." << std::endl;
 }
 
-void chegadaAoSemaforo(Evento * evento) {
-    std::cout << "Chegando ao fim da pista..." << std::endl;
+void chegadaAoFimDaPista(Evento * evento) {
+    std::cout << "Carro chegando ao fim da pista..." << std::endl;
 
     int sem_index = evento->getSemaforo();
     int pista_index = evento->getPista();
@@ -291,35 +278,35 @@ void chegadaAoSemaforo(Evento * evento) {
     int index_destino = semaforos.at(sem_index)->gerarDestino(pista_index);
 
     int tempo = evento->getTempo();
-    insereNoRelogio(new Evento(sem_index, pista_index, index_destino, tempo, TROCA_DE_PISTA));
-    std::cout << "Chegou ao semaforo." << std::endl;
+    inserirNoRelogio(new Evento(sem_index, pista_index, index_destino, tempo, TROCA_DE_PISTA));
+    std::cout << "Chegou ao semáforo." << std::endl;
 }
 
-void trocaDePista(Evento * evento) {
-    std::cout << "Trocando de pista..." << std::endl;
+void trocarPista(Evento * evento) {
+    std::cout << "Carro trocando de pista..." << std::endl;
 
     int sem_index = evento->getSemaforo();
     int pista_index = evento->getPista();
     int des_index = evento->getDestino();
 
     try {
-        semaforos.at(sem_index)->trocaDePista(pista_index, des_index);
+        semaforos.at(sem_index)->trocarPista(pista_index, des_index);
 
         Pista * pista_destino = semaforos.at(sem_index)->getSaidas()->at(pista_index)->getEntradas()[des_index];
         int tempo_percurso = (int) (pista_destino->getTamanhoMax() / pista_destino->getVelocidade());
 
         if (sumidouros.contains(pista_destino)) {
             int index_pis = sumidouros.find(pista_destino);
-            insereNoRelogio(new Evento(-1, index_pis, -1, evento->getTempo() + tempo_percurso, CHEGADA_AO_SEMAFORO));
+            inserirNoRelogio(new Evento(-1, index_pis, -1, evento->getTempo() + tempo_percurso, CHEGADA_AO_FIM_DA_PISTA));
         } else if (semaforos.at(0)->getSaidas()->contains(pista_destino)) {
-            insereNoRelogio(new Evento(0, semaforos.at(0)->getSaidas()->find(pista_destino), -1,
-                evento->getTempo() +  tempo_percurso, CHEGADA_AO_SEMAFORO));
+            inserirNoRelogio(new Evento(0, semaforos.at(0)->getSaidas()->find(pista_destino), -1,
+                evento->getTempo() +  tempo_percurso, CHEGADA_AO_FIM_DA_PISTA));
         } else {
-            insereNoRelogio(new Evento(1, semaforos.at(1)->getSaidas()->find(pista_destino), -1,
-                evento->getTempo() +  tempo_percurso, CHEGADA_AO_SEMAFORO));
+            inserirNoRelogio(new Evento(1, semaforos.at(1)->getSaidas()->find(pista_destino), -1,
+                evento->getTempo() +  tempo_percurso, CHEGADA_AO_FIM_DA_PISTA));
         }
 
-        std::cout << "Trocou com sucesso." << std::endl;
+        std::cout << "Trocou de pista." << std::endl;
     }
      catch (std::out_of_range ex) {
         int tempo_evento;
@@ -332,24 +319,24 @@ void trocaDePista(Evento * evento) {
                 }
             }
             tempo_evento = evento->getTempo() + 1;
-            std::cout << "Semaforo fechado." << std::endl;
+            std::cout << "Não conseguiu: semáforo fechado." << std::endl;
         } else {
             tempo_evento = evento->getTempo() + 1;
-            std::cout << "Engarrafamento." << std::endl;
+            std::cout << "Não conseguiu: pista destino em engarrafamento." << std::endl;
         }
-        insereNoRelogio(new Evento(sem_index, pista_index, des_index, tempo_evento, TROCA_DE_PISTA));
+        inserirNoRelogio(new Evento(sem_index, pista_index, des_index, tempo_evento, TROCA_DE_PISTA));
 
         for (int i = 0; i < relogio.size(); i++) {
             if (relogio.at(i)->getSemaforo() == sem_index && relogio.at(i)->getPista() == pista_index
-                && relogio.at(i)->getTipo() == CHEGADA_AO_SEMAFORO) {
-                insereNoRelogio(new Evento(sem_index, pista_index, -1, relogio.at(i)->getTempo() + 1, CHEGADA_AO_SEMAFORO));
+                && relogio.at(i)->getTipo() == CHEGADA_AO_FIM_DA_PISTA) {
+                inserirNoRelogio(new Evento(sem_index, pista_index, -1, relogio.at(i)->getTempo() + 1, CHEGADA_AO_FIM_DA_PISTA));
                 relogio.remove(relogio.at(i));
             }
         }
     }
 }
 
-void insereNoRelogio(Evento * evento) {
+void inserirNoRelogio(Evento * evento) {
     if (relogio.size() == 0) {
         relogio.push_front(evento);
         return;
@@ -364,7 +351,7 @@ void insereNoRelogio(Evento * evento) {
 }
 
 void finalize() {
-    std::cout << "Finalizando..." << std::endl;
+    std::cout << "\nFINALIZANDO..." << std::endl;
     for (int i = 0; i < relogio.size(); i++) {
         delete relogio.pop_front();
     }
@@ -374,6 +361,5 @@ void finalize() {
     for (int i = 0; i < semaforos.size(); i++) {
         delete semaforos.pop_front();
     }
-    std::cout << "Simulacao finalizada." << std::endl;
-
+    std::cout << "SIMULAÇÃO FINALIZADA.\n" << std::endl;
 }

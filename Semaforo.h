@@ -7,8 +7,8 @@ class Semaforo {
 public:
     Semaforo(structures::DoublyLinkedList<Pista *> * saida, int ** probabilidades);
     ~Semaforo();
-    void mudaSinal();
-    void trocaDePista(int index, int destino);
+    void mudarSinal();
+    void trocarPista(int index, int destino);
     bool isAberto(int index);
     bool isFechado();
 

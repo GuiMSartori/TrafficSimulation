@@ -19,7 +19,7 @@ Semaforo::~Semaforo() {
   delete[] probabilidades;
 }
 
-void Semaforo::mudaSinal() {
+void Semaforo::mudarSinal() {
     for (auto i = 0; i < 4; i++) {
         if (sinal[i] == true) {
             sinal[i] = false;
@@ -35,7 +35,7 @@ void Semaforo::mudaSinal() {
     return;
 }
 
-void Semaforo::trocaDePista(int index, int destino) {
+void Semaforo::trocarPista(int index, int destino) {
     if (saida->at(index)->getEntradas()[destino]->canFit(saida->at(index)->front()) && isAberto(index)) {
         saida->at(index)->getEntradas()[destino]->enqueue(saida->at(index)->dequeue());
     } else {
