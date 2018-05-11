@@ -13,13 +13,20 @@ Pista::Pista(double tamanhoMax, double velocidade, int t_ger_carro, int t_var) {
     this->entradas = new Pista *[3];
 }
 
+Pista::~Pista() {
+    if(entradas != nullptr) {
+        delete[] entradas;
+    }
+    clear();
+}
+
 void Pista::enqueue(const Carro& data) {
     double tamanhoCarro = data.getTamanho();
     if (!canFit(data)) {
         throw std::out_of_range("Pista Enqueue");
     }
     tamanhoOcupado += tamanhoCarro + 3;
-    LinkedQueue::enqueue(data);
+    LinkedQueue<Carro>::enqueue(data);
 }
 
 Carro Pista::dequeue() {
@@ -27,7 +34,7 @@ Carro Pista::dequeue() {
         throw std::out_of_range("");
     }
     tamanhoOcupado -= (front().getTamanho() + 3);
-    return LinkedQueue::dequeue();
+    return LinkedQueue<Carro>::dequeue();
 }
 
 double Pista::getVelocidade() const {

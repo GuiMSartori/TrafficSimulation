@@ -5,7 +5,7 @@
 
 class Semaforo {
 public:
-    Semaforo(structures::LinkedList<Pista *> * saida, double ** probabilidades);
+    Semaforo(structures::DoublyLinkedList<Pista *> * saida, int ** probabilidades);
     ~Semaforo();
     void mudaSinal();
     void trocaDePista(int index, int destino);
@@ -14,13 +14,13 @@ public:
 
     int gerarDestino(int index);
 
-    structures::LinkedList<Pista *> * getSaidas();
+    structures::DoublyLinkedList<Pista *> * getSaidas();
     int getPistaAberta();
 private:
     int index_aberto;
     bool sinal[4];
-    structures::LinkedList<Pista *> * saida;
-    double ** probabilidades;
+    structures::DoublyLinkedList<Pista *> * saida;
+    int ** probabilidades;
 };
 
 #endif /* SEMAFORO_H */

@@ -9,6 +9,7 @@
 class Pista : public LinkedQueue<Carro> {
 public:
     Pista(double tamanhoMax, double velocidade, int t_ger_carro, int t_var);
+    ~Pista();
 
     void enqueue(const Carro& carro);
     Carro dequeue();

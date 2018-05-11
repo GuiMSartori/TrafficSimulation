@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "Semaforo.h"
 
-Semaforo::Semaforo(structures::LinkedList<Pista *> * saida, double ** probabilidades) {
+Semaforo::Semaforo(structures::DoublyLinkedList<Pista *> * saida, int ** probabilidades) {
     this->saida = saida;
     this->probabilidades = probabilidades;
     for (int i = 0; i < 4; i++) {
@@ -12,6 +12,11 @@ Semaforo::Semaforo(structures::LinkedList<Pista *> * saida, double ** probabilid
 }
 
 Semaforo::~Semaforo() {
+  delete saida;
+  for (int i = 0; i < 4; i++) {
+      delete[] probabilidades[i];
+  }
+  delete[] probabilidades;
 }
 
 void Semaforo::mudaSinal() {
@@ -62,7 +67,7 @@ bool Semaforo::isFechado() {
     return true;
 }
 
-structures::LinkedList<Pista *> * Semaforo::getSaidas() {
+structures::DoublyLinkedList<Pista *> * Semaforo::getSaidas() {
     return saida;
 }
 

@@ -3,16 +3,15 @@
 #include <fstream>
 #include <time.h>
 #include <stdlib.h>
-#include "linked_list.h"
-#include "LinkedQueue.h"
+#include "doubly_linked_list.h"
 #include "Evento.cpp"
 #include "Semaforo.cpp"
 
-structures::LinkedList<Evento *> relogio;
-structures::LinkedList<Pista *> pistas;
-structures::LinkedList<Pista *> sumidouros;
-structures::LinkedList<Pista *> fontes;
-structures::LinkedList<Semaforo *> semaforos;
+structures::DoublyLinkedList<Evento *> relogio;
+structures::DoublyLinkedList<Pista *> pistas;
+structures::DoublyLinkedList<Pista *> sumidouros;
+structures::DoublyLinkedList<Pista *> fontes;
+structures::DoublyLinkedList<Semaforo *> semaforos;
 
 int tempo_simulacao;
 int tempo_simulado;
@@ -67,9 +66,9 @@ void init() {
 
 void initPistas() {
     std::cout << "initPistas" << '\n';
-    pistas = structures::LinkedList<Pista *>();
-    sumidouros = structures::LinkedList<Pista *>();
-    fontes = structures::LinkedList<Pista *>();
+    pistas = structures::DoublyLinkedList<Pista *>();
+    sumidouros = structures::DoublyLinkedList<Pista *>();
+    fontes = structures::DoublyLinkedList<Pista *>();
 
     std::ifstream ifs;
     ifs.open("pistas.txt");
@@ -102,16 +101,16 @@ void initPistas() {
 
 void initSemaforos() {
     std::cout << "initSemaforos" << '\n';
-    semaforos = structures::LinkedList<Semaforo *>();
+    semaforos = structures::DoublyLinkedList<Semaforo *>();
 
-    double ** probs_sem1 = new double * [4];
-    double ** probs_sem2 = new double * [4];
+    int ** probs_sem1 = new int * [4];
+    int ** probs_sem2 = new int * [4];
 
     std::ifstream ifs;
     ifs.open("semaforo.txt");
     if (ifs.is_open()) {
         for (int i = 0; i < 4; i++) {
-            probs_sem1[i] = new double[3];
+            probs_sem1[i] = new int[3];
 
             char linha[40];
 
@@ -123,7 +122,7 @@ void initSemaforos() {
             }
         }
         for (int i = 0; i < 4; i++) {
-            probs_sem2[i] = new double[3];
+            probs_sem2[i] = new int[3];
 
             char linha[40];
 
@@ -138,8 +137,8 @@ void initSemaforos() {
     } else
         std::cout << "Nao foi possivel abrir semaforo.txt" << std::endl;
 
-    structures::LinkedList<Pista *> * pistas_sem1 = new structures::LinkedList<Pista *>();
-    structures::LinkedList<Pista *> * pistas_sem2 = new structures::LinkedList<Pista *>();
+    structures::DoublyLinkedList<Pista *> * pistas_sem1 = new structures::DoublyLinkedList<Pista *>();
+    structures::DoublyLinkedList<Pista *> * pistas_sem2 = new structures::DoublyLinkedList<Pista *>();
 
     for (int i = 0; i < 4; i++) {
         pistas_sem1->push_back(pistas.at(i));
@@ -200,7 +199,7 @@ void setEntradasPistas() {
 
 void initRelogio() {
     std::cout << "initRelogio" << '\n';
-    relogio = structures::LinkedList<Evento *>();
+    relogio = structures::DoublyLinkedList<Evento *>();
     insereNoRelogio(new Evento(-1, -1, -1, periodo_semaforo, MUDANCA_DO_SEMAFORO));
     for (int i = 0; i < fontes.size(); i++) {
         int sem_index = (i < 3) ? 0 : 1;
@@ -297,7 +296,7 @@ void chegadaAoSemaforo(Evento * evento) {
 }
 
 void trocaDePista(Evento * evento) {
-    std::cout << "Trocando de pista." << std::endl;
+    std::cout << "Trocando de pista..." << std::endl;
 
     int sem_index = evento->getSemaforo();
     int pista_index = evento->getPista();
@@ -321,10 +320,18 @@ void trocaDePista(Evento * evento) {
         }
 
         std::cout << "Trocou com sucesso." << std::endl;
-    } catch (std::out_of_range ex) {
+    }
+     catch (std::out_of_range ex) {
         int tempo_evento;
         if (!semaforos.at(sem_index)->isAberto(pista_index)) {
-            tempo_evento = evento->getTempo() + periodo_semaforo - (tempo_simulado % periodo_semaforo);
+            Evento * evento;
+            for (int i = 0; i < relogio.size(); i++) {
+                if (relogio.at(i)->getTipo() == MUDANCA_DO_SEMAFORO) {
+                    evento = relogio.at(i);
+                    break;
+                }
+            }
+            tempo_evento = evento->getTempo() + 1;
             std::cout << "Semaforo fechado." << std::endl;
         } else {
             tempo_evento = evento->getTempo() + 1;
